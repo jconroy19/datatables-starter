@@ -1,22 +1,27 @@
 //Here we're importing items we'll need. You can add other imports here.
-
+import { customerColumns, admissionsColumns } from "./columns";
 var table;
 
 // exposing loadData to FileMaker Script
 window.loadData = function (json) {
-  const data = JSON.parse(json) || []; //how to bring in data from FileMaker
-  console.log(data);
+  const obj = JSON.parse(json);
+  const data = obj.data;
+  const datatype = obj.columnType;
+  // const datatype = "Customers";
+  // const data = JSON.parse(json) || []; //how to bring in data from FileMaker
+  // console.log(data);
+  // const datatype = "Customer";
+
+  const columns = datatype === "Customers" ? customerColumns : admissionsColumns;
+
   //TODO: Load the DataTables libraries by linking to the DataTables CDN.
   //TODO: Get data from FileMaker
   //TODO: prep it for the JS.
-
   //TODO: create the columns.
-
   //TODO: Explore options of Datatables
   //https://datatables.net/reference/option/
   //https://datatables.net/examples/index
   // Create the DataTable, after destroying it if already exists
-  
   // table = $("#dtable").DataTable() //jquery #dtable function goes to div in indes.html and selects dtable 
   // from CDN install -> DataTable 
   table = $("#dtable").DataTable({
@@ -24,14 +29,8 @@ window.loadData = function (json) {
     pageLength: 20,
     searching: true,
     colReorder: true,
-    columns: [
-    {title:"City", data: "fieldData.City"}, //how describe column of datatable
-    {title: "CompanyName", data: "fieldData.CompanyName"},
-    {title: "Id", data: "fieldData.Id"},
-    {title: "State", data: "fieldData.State"},
-    {title: "StreetAddress", data: "fieldData.StreetAddress"},
-    {title: "Zip", data: "fieldData.Zip"},
-  ],
+    order: [[3, "State"]],
+    columns: columns,
     data: data,
     // [
     //   {name:"Charlotte", age: 6, city: "Portland"},
